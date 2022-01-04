@@ -7,6 +7,23 @@ import Head from "next/head";
 const Home: NextPage = () => {
   const [user, loading, error] = useAuthState(auth);
 
+  const render = () => {
+    // if (loading) return <>loading...</>;
+    if (loading)
+      return (
+        <>
+          <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-sky-400 opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
+        </>
+      );
+
+    if (user) return <>{user.email}</>;
+
+    if (error) return <>{error.message}</>;
+
+    return <SignIn />;
+  };
+
   return (
     <>
       <Head>
@@ -14,7 +31,9 @@ const Home: NextPage = () => {
         <meta name="description" content="Wall-E but Real" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {!user && !loading ? <SignIn /> : user?.email}
+      <div className="h-full w-full flex justify-center items-center">
+        {render()}
+      </div>
     </>
   );
 };
