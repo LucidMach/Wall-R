@@ -7,6 +7,7 @@ html {
   height: 100%;
   width: 100%;
   user-select: none;
+  background: #f1f1f1;
 }
 #__next {
   height: 100%;
