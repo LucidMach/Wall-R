@@ -1,4 +1,11 @@
-const Bin: React.FC = () => {
+import { Dispatch, SetStateAction } from "react";
+
+interface Props {
+  capacity: number;
+  setCapacity: Dispatch<SetStateAction<number>>;
+}
+
+const Bin: React.FC<Props> = ({ capacity, setCapacity }) => {
   return (
     <div className="w-full flex flex-col items-center absolute top-1/2 transform -translate-y-1/2">
       <svg
@@ -6,7 +13,7 @@ const Bin: React.FC = () => {
         height="300"
         viewBox="0 0 200 300"
         style={{
-          fill: "hsl(100, 75%, 45%, 1)",
+          fill: `hsl(${capacity}, 75%, 45%, 1)`,
         }}
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -15,7 +22,7 @@ const Bin: React.FC = () => {
       <h1 className="text-center absolute top-1/2 text-white font-semibold transform -translate-y-1/4">
         <span className="text-xs">capacity</span>
         <br />
-        <span className="text-6xl">100</span>
+        <span className="text-6xl">{capacity}</span>
         <br />
         <span className="text-2xl">%</span>
       </h1>

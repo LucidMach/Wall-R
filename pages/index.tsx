@@ -1,15 +1,14 @@
 import { useAuthState } from "react-firebase-hooks/auth";
 import SignIn from "../components/SignIn";
+import { auth } from "../firebase";
 import Dash from "../components/Dash";
 import type { NextPage } from "next";
-import { auth } from "../firebase";
 import Head from "next/head";
 
 const Home: NextPage = () => {
   const [user, loading, error] = useAuthState(auth);
 
   const render = () => {
-    // if (loading) return <>loading...</>;
     if (loading)
       return (
         <>
