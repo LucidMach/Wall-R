@@ -2,10 +2,9 @@ import { Dispatch, SetStateAction } from "react";
 
 interface Props {
   capacity: number;
-  setCapacity: Dispatch<SetStateAction<number>>;
 }
 
-const Bin: React.FC<Props> = ({ capacity, setCapacity }) => {
+const Bin: React.FC<Props> = ({ capacity }) => {
   return (
     <div className="w-full flex flex-col items-center absolute top-1/2 transform -translate-y-1/2">
       <svg
