@@ -4,14 +4,14 @@
 #define firebaseDBurl "wall-r-default-rtdb.asia-southeast1.firebasedatabase.app"
 #define firebaseSecret "AGSPvg4x4Mje6HdEHTxToRcSywxyd4K0SIaNBXOm"
 
-#define ssid "Nukalas"
+#define ssid "Nukalas_2GEXT"
 #define password "885623277"
 
 FirebaseData fill_data;
 
 void setup()
 {
-  Serial.begin(115200);
+  Serial.begin(9600);
 
   WiFi.begin(ssid,password);
   while(WiFi.status() != WL_CONNECTED)
@@ -25,11 +25,16 @@ void setup()
 
 void loop()
 {
-  // Serial.println("Firebase Connected");
+//   Serial.println("Firebase Connected");
 
-  int value = random(0,100);
+if(Serial.available()>0){
+  int value = Serial.parseInt();
+  value = (value > 100) ? 100: value;
+  value = (value < 0) ? 0 : value; 
   Serial.println(value);
   delay(100);
   
   Firebase.setInt(fill_data,"/0",value);
+}
+ 
 }
