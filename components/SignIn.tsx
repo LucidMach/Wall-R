@@ -1,7 +1,7 @@
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../firebase";
 
-const handleClick = () => {
+const handleClick = async () => {
   signInWithPopup(auth, provider).catch((error) => {
     const errorCode = error.code;
     const errorMessage = error.message;

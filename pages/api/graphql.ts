@@ -1,12 +1,18 @@
-import { gql, ApolloServer } from "apollo-server-micro";
+import { ApolloServer } from "apollo-server-micro";
 
-import { typeDefs } from "./schemas";
-import { resolvers } from "./resolvers";
+import { typeDefs } from "../../graphql/schema";
+import { resolvers } from "../../graphql/resolvers";
+import { createContext } from "../../graphql/context";
 
-const server = new ApolloServer({ typeDefs, resolvers });
-const startServer = server.start();
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: createContext,
+});
+const startServer = server.start(); //creating an instance of server.start() outside the request handler LOOP
 
 export default async function handler(req, res) {
+  // manually setting cors
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader(
     "Access-Control-Allow-Origin",
@@ -17,6 +23,7 @@ export default async function handler(req, res) {
     "Origin, X-Requested-With, Content-Type, Accept"
   );
 
+  // rejecting HTTP OPTIONS requests
   if (req.method === "OPTIONS") {
     res.end();
     return false;

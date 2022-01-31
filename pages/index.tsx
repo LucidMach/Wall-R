@@ -1,12 +1,45 @@
+import { useEffect } from "react";
+
 import { useAuthState } from "react-firebase-hooks/auth";
-import SignIn from "../components/SignIn";
 import { auth } from "../firebase";
+
+import SignIn from "../components/SignIn";
 import Dash from "../components/Dash";
+
 import type { NextPage } from "next";
 import Head from "next/head";
 
+import client from "../apollo-client";
+import { gql } from "@apollo/client";
+
 const Home: NextPage = () => {
   const [user, loading, error] = useAuthState(auth);
+
+  useEffect(() => {
+    const query = gql`
+      query SignUserIn($email: String) {
+        signUserIn(email: $email) {
+          id
+          email
+          bots {
+            id
+          }
+        }
+      }
+    `;
+
+    const prismaUSerSync = async () => {
+      const { data } = await client.query({
+        query,
+        variables: {
+          email: user.email,
+        },
+      });
+      console.log(data);
+    };
+
+    if (user) prismaUSerSync();
+  }, [user]);
 
   const render = () => {
     if (loading)
