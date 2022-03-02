@@ -11,7 +11,7 @@ const NavBar: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full shadow-md">
       <div className="flex w-full justify-between items-center px-8 py-4">
         <Image
           src="/LoGo.png"

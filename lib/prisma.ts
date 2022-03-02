@@ -1,3 +1,4 @@
+// nextjs not to span infinite instances of prisma
 import { PrismaClient } from "@prisma/client";
 
 let prisma: PrismaClient;
