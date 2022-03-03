@@ -9,25 +9,30 @@ export const resolvers = {
           email,
         },
       });
-      const user_bots = await prisma.user_Bots.findMany({
-        where: {
-          user_id: user.id,
-        },
-      });
 
-      var bots = [];
-      for (let index = 0; index < user_bots.length; index++) {
-        const bot = await prisma.bots.findUnique({
+      if (user) {
+        const user_bots = await prisma.user_Bots.findMany({
           where: {
-            id: user_bots[index].bot_id,
+            user_id: user.id,
           },
         });
-        bots.push(bot);
+
+        var bots = [];
+        for (let index = 0; index < user_bots.length; index++) {
+          const bot = await prisma.bots.findUnique({
+            where: {
+              id: user_bots[index].bot_id,
+            },
+          });
+          bots.push(bot);
+        }
+
+        const user_with_bots = { id: user.id, email: user.email, bots: bots };
+
+        return user_with_bots;
       }
 
-      const user_with_bots = { id: user.id, email: user.email, bots: bots };
       // if email found
-      if (user) return user_with_bots;
       else {
         // creating a user from gql context
         const newUser = await ctx.prisma.users.create({
@@ -35,7 +40,7 @@ export const resolvers = {
             email,
           },
         });
-        return newUser;
+        return { id: newUser.id, email: newUser.email, bots: [] };
       }
     },
   },
@@ -91,7 +96,7 @@ export const resolvers = {
       if (!foundUser && !foundBot) return { msg: "USER_ID && BOT_ID INVALID" };
       if (!foundUser) return { msg: "USER_ID INVALID" };
       if (!foundBot) return { msg: "BOT_ID INVALID" };
-      await ctx.prisma.bots.update({
+      const updatedBot = await ctx.prisma.bots.update({
         where: { id: bot_id },
         data: {
           users: {
@@ -99,6 +104,15 @@ export const resolvers = {
           },
         },
       });
+      // const updatedUser = await ctx.prisma.users.update({
+      //   where: { id: user_id },
+      //   data: {
+      //     bots: {
+      //       create: { bot_id },
+      //     },
+      //   },
+      // });
+
       return { msg: "SUCCESS" };
     },
   },

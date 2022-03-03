@@ -10,6 +10,7 @@ import NavBar from "./NavBar";
 import Switcher from "./Switcher";
 import AddBotForm from "./AddBotForm";
 import UserContext from "./UserContext";
+import Spinner from "./Spinner";
 
 // interface Props {
 //   user: PrismaUser;
@@ -22,8 +23,11 @@ const Dash: React.FC = () => {
 
   const renderBots = (user) => {
     if (user && user.bots.length > 0) {
-      return <Bin capacity={user.bots[index].fillPercent} />;
+      return (
+        <Bin bot={user.bots[index]} capacity={user.bots[index].fillPercent} />
+      );
     }
+    if (user === undefined) return <Spinner />;
     return (
       <>
         <div className="flex flex-col items-center gap-2">
@@ -56,6 +60,8 @@ const Dash: React.FC = () => {
         {renderBots(user)}
         {showForm ? <AddBotForm setShowForm={setShowForm} /> : null}
         <Switcher
+          bot={user && user.bots ? user.bots[index] : { id: 0, fillPercent: 0 }}
+          setShowForm={setShowForm}
           index={index}
           setIndex={setIndex}
           maxIndex={user && user.bots ? user.bots.length : 0}

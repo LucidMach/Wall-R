@@ -4,6 +4,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase";
 
 import SignIn from "../components/SignIn";
+import Spinner from "../components/Spinner";
 import Dash from "../components/Dash";
 
 import type { NextPage } from "next";
@@ -19,8 +20,6 @@ const Home: NextPage = () => {
   const [prismaUser, setPrismaUser] = useState<PrismaUser>();
 
   useEffect(() => {
-    console.log(prismaUser);
-
     // gql queries for the app
     const query = gql`
       query getUser($email: String) {
@@ -55,13 +54,7 @@ const Home: NextPage = () => {
   // quick routing between signin page and dashboard UI
   const render = () => {
     // loading spinner animations
-    if (loading)
-      return (
-        <>
-          <span className="animate-ping absolute inline-flex h-4 w-4 rounded-full bg-sky-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
-        </>
-      );
+    if (loading) return <Spinner />;
     if (user) return <Dash />;
     if (error) return <>{error.message}</>;
     return <SignIn />;

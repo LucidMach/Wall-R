@@ -28,6 +28,7 @@ export const typeDefs = gql`
 
   type User_Bot_Response {
     msg: String
+    # user: User
   }
 
   type Query {

@@ -32,7 +32,8 @@ const AddBotForm: React.FC<Props> = ({ setShowForm }) => {
             userId: user.id,
           },
         });
-        console.log(parseInt(botId), user.id, data.data.linkBotWithUser);
+        console.log(data.data.linkBotWithUser);
+        location.reload();
       }}
       className="flex flex-col gap-2 w-2/3 shadow-md px-2 py-3 absolute top-1/2 transform -translate-y-1/2 bg-slate-300"
     >
