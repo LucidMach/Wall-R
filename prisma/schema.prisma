@@ -1,0 +1,44 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// creating a user model with email (max length = 320)
+model Users {
+  id    Int         @id @default(autoincrement()) // @id -> primary_key @default() -> initialization_with_default_value
+  email String      @unique @db.VarChar(320) // @db -> lets us use custom datatypes from postgres @unique -> makes value unique in column
+  bots  User_Bots[]
+}
+
+model Bots {
+  id             Int         @id @default(autoincrement())
+  fillPercent    Int
+  batteryPercent Int
+  status         Status      @default(WAIT) // this field is messed up, we need to redo it
+  users          User_Bots[]
+}
+
+// represents if bot is in fill position/travelling/waiting at collection point
+enum Status {
+  FILL
+  TRAVEL
+  WAIT
+}
+
+// creating a many to many relation between User and Bot
+model User_Bots {
+  user_id Int
+  user    Users @relation(fields: [user_id], references: [id]) // @relation.field -> specifies internal field for relation @relation.references -> specifies external field we're referencing 
+  bot_id  Int
+  bot     Bots  @relation(fields: [bot_id], references: [id])
+
+  //creates an id from user_id & bot_id (i think)
+  @@id([user_id, bot_id])
+}
