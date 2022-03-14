@@ -8,13 +8,13 @@ interface Props {
 
 const Switcher: React.FC<Props> = ({ index, setIndex, maxIndex }) => {
   return (
-    <div className="w-full flex justify-around items-center p-4">
+    <div className="w-full flex justify-around items-center py-4 px-6 shadow-inner">
       <svg
         className={`left ${
           index !== 0 ? "cursor-pointer" : "cursor-not-allowed"
         }`}
-        width="	1.875rem"
-        height="2.25rem"
+        width="	1rem"
+        height="2rem"
         viewBox="0 0 30 36"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -32,8 +32,8 @@ const Switcher: React.FC<Props> = ({ index, setIndex, maxIndex }) => {
         className={`right ${
           index < maxIndex ? "cursor-pointer" : "cursor-not-allowed"
         }`}
-        width="	1.875rem"
-        height="2.25rem"
+        width="	1rem"
+        height="2rem"
         viewBox="0 0 30 36"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

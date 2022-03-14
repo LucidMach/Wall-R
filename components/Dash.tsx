@@ -8,7 +8,7 @@ import { onValue, ref } from "firebase/database";
 const Dash: React.FC = () => {
   const [capacity, setCapacity] = useState<number>(35);
   const [index, setIndex] = useState(0);
-  const fillPercentRef = ref(db, "/0");
+  const fillPercentRef = ref(db, `/${index}/fill`);
   onValue(fillPercentRef, (snapshot) => {
     const data = snapshot.val();
     // console.log(data);
