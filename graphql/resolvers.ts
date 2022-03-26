@@ -1,4 +1,10 @@
 import prisma from "../lib/prisma";
+import { createPubSub } from "@graphql-yoga/node";
+
+const pubsub = createPubSub<{
+  userbot_fill: [userbot_fill: {}];
+}>();
+// const pubsub = createPubSub();
 
 export const resolvers = {
   Query: {
@@ -11,7 +17,7 @@ export const resolvers = {
       });
 
       if (user) {
-        const user_bots = await prisma.user_Bots.findMany({
+        const user_bots = await ctx.prisma.user_Bots.findMany({
           where: {
             user_id: user.id,
           },
@@ -19,7 +25,7 @@ export const resolvers = {
 
         var bots = [];
         for (let index = 0; index < user_bots.length; index++) {
-          const bot = await prisma.bots.findUnique({
+          const bot = await ctx.prisma.bots.findUnique({
             where: {
               id: user_bots[index].bot_id,
             },
@@ -45,6 +51,41 @@ export const resolvers = {
     },
   },
 
+  Subscription: {
+    subUser: {
+      subscribe: () => pubsub.subscribe("userbot_fill"),
+      resolve: async (parent, { email }, ctx) => {
+        // finding user with emailid
+        const user = await ctx.prisma.users.findUnique({
+          where: {
+            email,
+          },
+        });
+
+        if (user) {
+          const user_bots = await ctx.prisma.user_Bots.findMany({
+            where: {
+              user_id: user.id,
+            },
+          });
+
+          var bots = [];
+          for (let index = 0; index < user_bots.length; index++) {
+            const bot = await ctx.prisma.bots.findUnique({
+              where: {
+                id: user_bots[index].bot_id,
+              },
+            });
+            bots.push(bot);
+          }
+
+          const user_with_bots = { id: user.id, email: user.email, bots: bots };
+          return user_with_bots;
+        }
+      },
+    },
+  },
+
   Mutation: {
     updateBotFill: async (parent, { id, fill }, ctx) => {
       // finding and updating the bot's fill percentage
@@ -60,6 +101,7 @@ export const resolvers = {
             fillPercent: fill,
           },
         });
+        pubsub.publish("userbot_fill", bot);
         return bot;
       }
       // if bot not found
@@ -70,6 +112,7 @@ export const resolvers = {
           batteryPercent: 100,
         },
       });
+      pubsub.publish("userbot_fill", newBot);
       return newBot;
     },
 

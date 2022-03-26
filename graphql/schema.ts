@@ -2,9 +2,8 @@
   // register a bot in the database
   link bot in database with a user
 */
-import { gql } from "apollo-server-micro";
 
-export const typeDefs = gql`
+export const typeDefs = `
   type User {
     "unique identifier for each user"
     id: Int!
@@ -41,5 +40,10 @@ export const typeDefs = gql`
     updateBotFill(id: Int, fill: Int): Bot
     "registers a bot to a user with specified ID"
     linkBotWithUser(bot_id: Int, user_id: Int): User_Bot_Response
+  }
+
+  type Subscription {
+    "does everything getUser does but also listens/subscribes to changes in user's bot fill values"
+    subUser(email: String): User
   }
 `;
