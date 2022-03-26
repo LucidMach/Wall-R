@@ -1,0 +1,15 @@
+{
+  "short_name": "wallr",
+  "name": "Wall-R",
+  "icons": [
+    {
+      "src": "icon.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#f1f1f1",
+  "background_color": "#1f1f1f"
+}
