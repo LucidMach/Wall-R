@@ -1,5 +1,5 @@
 // some react hooks
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState, useRef, ReactElement } from "react";
 
 // typescript interfaces
 import { PrismaUser } from "../interfaces";
@@ -19,7 +19,36 @@ import Spinner from "./Spinner";
 const Dash: React.FC = () => {
   const [index, setIndex] = useState(0);
   const [showForm, setShowForm] = useState(false);
-  const { prismaUser: user } = useContext(UserContext);
+  const { prismaUser, setPrismaUser } = useContext(UserContext);
+
+  useEffect(() => {
+    if (!prismaUser) return;
+
+    const url = new URL(window.location.href + "api/graphql");
+
+    const SUB_USER_QUERY = `subscription {
+      subUser(email: "${prismaUser.email}") {
+        __typename
+        id
+        email
+        bots {
+          id
+          fillPercent
+        }
+      }
+    }`;
+
+    url.searchParams.append("query", SUB_USER_QUERY);
+
+    const eventsource = new EventSource(url.toString(), {
+      withCredentials: true, // This is required for cookies
+    });
+
+    eventsource.onmessage = async (event) => {
+      const { data } = JSON.parse(event.data);
+      setPrismaUser(data.subUser);
+    };
+  });
 
   const renderBots = (user) => {
     if (user && user.bots.length > 0) {
@@ -57,14 +86,18 @@ const Dash: React.FC = () => {
         }}
       >
         <NavBar />
-        {renderBots(user)}
+        <div>{renderBots(prismaUser)}</div>
         {showForm ? <AddBotForm setShowForm={setShowForm} /> : null}
         <Switcher
-          bot={user && user.bots ? user.bots[index] : { id: 0, fillPercent: 0 }}
+          bot={
+            prismaUser && prismaUser.bots
+              ? prismaUser.bots[index]
+              : { id: 0, fillPercent: 0 }
+          }
           setShowForm={setShowForm}
           index={index}
           setIndex={setIndex}
-          maxIndex={user && user.bots ? user.bots.length : 0}
+          maxIndex={prismaUser && prismaUser.bots ? prismaUser.bots.length : 0}
         />
       </div>
     </>

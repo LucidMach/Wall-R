@@ -49,7 +49,7 @@ const Home: NextPage = () => {
 
     // making gql request after google oauth
     if (user) prismaUSerSync();
-  }, [user, prismaUser]);
+  }, [user]);
 
   // quick routing between signin page and dashboard UI
   const render = () => {
