@@ -9,7 +9,10 @@ const server = createServer<{
   req: NextApiRequest;
   res: NextApiResponse;
 }>({
-  cors: true,
+  cors: {
+    credentials: true,
+    origin: ["http://localhost:3000", "https://wallr.vercel.app/"],
+  },
   endpoint: "/api/graphql",
   schema: { typeDefs, resolvers },
   context: createContext,
