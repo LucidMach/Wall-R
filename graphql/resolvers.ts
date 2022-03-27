@@ -1,10 +1,9 @@
-import prisma from "../lib/prisma";
+import "event-target-polyfill";
 import { createPubSub } from "@graphql-yoga/node";
 
 const pubsub = createPubSub<{
   userbot_fill: [userbot_fill: {}];
 }>();
-// const pubsub = createPubSub();
 
 export const resolvers = {
   Query: {

@@ -20,7 +20,8 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-firebase-hooks": "^4.0.1",
-    "tailwindcss": "^3.0.8"
+    "tailwindcss": "^3.0.8",
+    "event-target-polyfill": "0.0.3"
   },
   "devDependencies": {
     "@types/node": "17.0.7",
