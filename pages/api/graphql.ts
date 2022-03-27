@@ -9,7 +9,7 @@ const server = createServer<{
   req: NextApiRequest;
   res: NextApiResponse;
 }>({
-  cors: false,
+  cors: true,
   endpoint: "/api/graphql",
   schema: { typeDefs, resolvers },
   context: createContext,
