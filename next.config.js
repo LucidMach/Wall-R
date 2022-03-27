@@ -3,5 +3,8 @@ module.exports = {
   images: {
     domains: ["lh3.googleusercontent.com"],
   },
+  experimental: {
+    esmExternals: false,
+  },
   reactStrictMode: true,
 };
