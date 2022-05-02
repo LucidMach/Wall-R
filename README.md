@@ -156,6 +156,8 @@ here are our graphQL resolvers
 
 3. **linkBotWithUser Mutation**: finds specified user and specified bot and creates a relation between both the bots by adding an entry in the user_bots table
 
+4. **subUser Subscription**: tracks every change to a user’s dustbin state and updates UI 
+
 ## Part-3: NextJS Pages & Components
 
 To build frontend of any web UI / dashboard, we only really need HTML, CSS, JavaScript, but the only problem is
