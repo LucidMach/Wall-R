@@ -4,12 +4,19 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "ngrok": "ngrok http 3000",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@apollo/client": "^3.5.8",
+    "@graphql-yoga/node": "^0.1.0-beta.7",
+    "@prisma/client": "^3.8.1",
     "autoprefixer": "^10.4.1",
+    "event-target-polyfill": "0.0.3",
     "firebase": "^9.6.1",
+    "graphql": "^16.3.0",
+    "graphql-yoga": "^1.18.3",
     "next": "12.0.7",
     "postcss": "^8.4.5",
     "react": "17.0.2",
@@ -22,6 +29,8 @@
     "@types/react": "17.0.38",
     "eslint": "8.6.0",
     "eslint-config-next": "12.0.7",
+    "ngrok": "^4.3.1",
+    "prisma": "^3.8.1",
     "typescript": "4.5.4"
   }
 }

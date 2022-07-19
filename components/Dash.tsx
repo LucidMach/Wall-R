@@ -19,7 +19,6 @@ const Dash: React.FC = () => {
 
   onValue(fillPercentRef, (snapshot) => {
     const data = snapshot.val();
-    // console.log(data);
     if (data !== capacity) setCapacity(data);
   });
 
